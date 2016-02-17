@@ -101,6 +101,34 @@ Xcode is also able to display `TODO` and `FIXME` tags directly in the source nav
 
 Other conventional comment tags, such as `NOTE` are not recognized by Xcode.
 
+#### Documentation ####
+
+All classes, protocols, methods, and variables in core components should be documented in Swift HeaderDoc format.
+
+Single line descriptions should use three slashes:
+
+```
+/// The protocol every video player instance conforms to.
+protocol MediaPlayerProtocol { ... }
+
+```
+
+![Single Line](https://cloud.githubusercontent.com/assets/4513736/13118276/7e59e1ea-d571-11e5-9522-d8707c4ade41.png)
+
+Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file.  Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
+
+```
+/**
+    Exposes interfaces which allow user interactions with the player's UI components.
+    *NOTE*: The gesture recognizers are only supported on the iOS player, not the tvOS player.
+*/
+protocol MediaPlayerViewProtocol { ... }
+```
+
+![Multi-Line](https://cloud.githubusercontent.com/assets/4513736/13118331/c3714fca-d571-11e5-9a10-7cfa7dd475cb.png)
+
+`*Italic*`, `**Bold**`, and `***Bold Italic***` character formatting is supported by HeaderDoc.
+
 ### Types ###
 
 Prefer Swift native types over Objective-C types when possible. Because Swift types bridge to Objective-C, you should avoid types like NSString and NSNumber in favor of Int or String.

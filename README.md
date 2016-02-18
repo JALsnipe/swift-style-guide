@@ -110,7 +110,6 @@ Single line descriptions should use three slashes:
 ```
 /// The protocol every video player instance conforms to.
 protocol MediaPlayerProtocol { ... }
-
 ```
 
 ![Single Line](https://cloud.githubusercontent.com/assets/4513736/13118276/7e59e1ea-d571-11e5-9522-d8707c4ade41.png)
@@ -126,6 +125,22 @@ protocol MediaPlayerViewProtocol { ... }
 ```
 
 ![Multi-Line](https://cloud.githubusercontent.com/assets/4513736/13118331/c3714fca-d571-11e5-9a10-7cfa7dd475cb.png)
+
+Functions should be documented with their parameters and return types, if applicable.
+
+```
+/**
+  A delegate method which returns the maximum seek point for a control element.
+  Used for add breaks or the end of the asset.
+  
+  - parameter mediaPlayerControls: An instance of a MediaPlayerControls class.
+  
+  - returns: The maximum seek point the control supports for its asset based on the number of cue points, or length of the asset.
+*/
+  func mediaPlayerControlsMaximumSeekPoint(mediaPlayerControls: MediaPlayerControls) -> Double
+  ```
+  
+![delegate method](https://cloud.githubusercontent.com/assets/4513736/13148334/eb0883e6-d62a-11e5-9bdb-4d18e290f387.png)
 
 `*Italic*`, `**Bold**`, and `***Bold Italic***` character formatting is supported by HeaderDoc.
 

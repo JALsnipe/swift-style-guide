@@ -101,6 +101,16 @@ Xcode is also able to display `TODO` and `FIXME` tags directly in the source nav
 
 Other conventional comment tags, such as `NOTE` are not recognized by Xcode.
 
+Currently, there is no Swift alternative to `#warning` to raise a custom compiler warning.  As a workaround, you can repurpose a deprecation warning to fit your needs:
+
+```
+@available(iOS, deprecated=1.0, message="I'm not deprecated, please ***FIXME**")
+@available(tvOS, deprecated=1.0, message="I'm not deprecated, please ***FIXME**")
+func WARNING() {
+
+}
+```
+
 #### Documentation ####
 
 All classes, protocols, methods, and variables in core components should be documented in Swift HeaderDoc format.

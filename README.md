@@ -630,7 +630,7 @@ If a particular test is taking longer to write than the method it is testing fee
 
 Tests should only focus on one outcome per test
 
-**Prefered**
+**Preferred:**
 ```swift
 func test_abs_givenANegativeNumber_itShouldHaveAPostiveResult() {
   let result = abs(-5)
@@ -643,7 +643,7 @@ func test_abs_givenAPositiveNumber_itShouldHaveAPostiveResult() {
 }
 ```
 
-**Not Prefered**
+**Not preferred:**
 ```swift
 func test_abs_givenANumber_itShouldHaveAPostiveResult() {
   let result1 = abs(-5)

@@ -103,7 +103,7 @@ Other conventional comment tags, such as `NOTE` are not recognized by Xcode.
 
 Currently, there is no Swift alternative to `#warning` to raise a custom compiler warning.  As a workaround, you can repurpose a deprecation warning to fit your needs:
 
-```
+```swift
 @available(iOS, deprecated=1.0, message="I'm not deprecated, please ***FIXME**")
 @available(tvOS, deprecated=1.0, message="I'm not deprecated, please ***FIXME**")
 func WARNING() {
@@ -117,7 +117,7 @@ All classes, protocols, methods, and variables in core components should be docu
 
 Single line descriptions should use three slashes:
 
-```
+```swift
 /// The protocol every video player instance conforms to.
 protocol MediaPlayerProtocol { ... }
 ```
@@ -126,7 +126,7 @@ protocol MediaPlayerProtocol { ... }
 
 Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file.  Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
 
-```
+```swift
 /**
     Exposes interfaces which allow user interactions with the player's UI components.
     *NOTE*: The gesture recognizers are only supported on the iOS player, not the tvOS player.
@@ -138,7 +138,7 @@ protocol MediaPlayerViewProtocol { ... }
 
 Functions should be documented with their parameters and return types, if applicable.
 
-```
+```swift
 /**
   A delegate method which returns the maximum seek point for a control element.
   Used for add breaks or the end of the asset.
@@ -153,6 +153,7 @@ Functions should be documented with their parameters and return types, if applic
 ![delegate method](https://cloud.githubusercontent.com/assets/4513736/13148334/eb0883e6-d62a-11e5-9bdb-4d18e290f387.png)
 
 `*Italic*`, `**Bold**`, and `***Bold Italic***` character formatting is supported by HeaderDoc.
+
 
 ### Types ###
 
@@ -192,6 +193,14 @@ let scaleInt = Int(scale)
 let scale: NSNumber = 5.0
 let scaleString = scale.stringValue
 let scaleInt = scale.integerValue
+```
+
+Objective-C types should be avoided if not explicitly required.  As an alternative, use the Swift String constructors:
+
+```swift
+let scale = 5.0
+let str = String(scale) // "5.0"
+let otherStr = String(format: "%.0f", scale) // "5"
 ```
 
 

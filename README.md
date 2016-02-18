@@ -460,9 +460,9 @@ let myDictionary: [String : AnyObject] = ["String" : 0]
 Prefer letting the compiler infer the type instead of explcitly stating it, wherever possible:
 
 ```swift
-var max = 0			    // Int
-var name = "John	 	    // String
-var rect = CGRect()		    // CGRect
+var max = 0                         // Int
+var name = "John                    // String
+var rect = CGRect()                 // CGRect
 var shoppingList = ["Eggs", "Milk"] // [String]
 
 // Do not do:

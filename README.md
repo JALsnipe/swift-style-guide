@@ -101,7 +101,7 @@ Xcode is also able to display `TODO` and `FIXME` tags directly in the source nav
 
 Other conventional comment tags, such as `NOTE` are not recognized by Xcode.
 
-Currently, there is no Swift alternative to `#warning` to raise a custom compiler warning.  As a workaround, you can repurpose a deprecation warning to fit your needs:
+Currently, there is no Swift alternative to `#warning` to raise a custom compiler warning. As a workaround, you can repurpose a deprecation warning to fit your needs:
 
 ```swift
 @available(iOS, deprecated=1.0, message="I'm not deprecated, please ***FIXME**")
@@ -124,7 +124,7 @@ protocol MediaPlayerProtocol { ... }
 
 ![Single Line](https://cloud.githubusercontent.com/assets/4513736/13118276/7e59e1ea-d571-11e5-9522-d8707c4ade41.png)
 
-Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file.  Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
+Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file. Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
 
 ```swift
 /**
@@ -195,7 +195,7 @@ let scaleString = scale.stringValue
 let scaleInt = scale.integerValue
 ```
 
-Objective-C types should be avoided if not explicitly required.  As an alternative, use the Swift String constructors:
+Objective-C types should be avoided if not explicitly required. As an alternative, use the Swift String constructors:
 
 ```swift
 let scale = 5.0
@@ -425,10 +425,10 @@ var intValue : Int
 
 ```
 
-In all use-cases, the colon should be associated with the left-most item with no spaces preceding and one space afterwards:
+The only exception to this rule is with Dictionary literals.
 
 ```swift
-let myDictionary: [String: AnyObject] = ["String": 0]
+let myDictionary: [String : AnyObject] = ["String" : 0]
 ```
 
 ### Type Inference ###

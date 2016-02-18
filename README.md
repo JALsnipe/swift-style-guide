@@ -1,4 +1,4 @@
-# Prolific Swift Style Guide
+# A+E Swift Style Guide - DRAFT
 
 ## Table Of Contents ##
 
@@ -19,12 +19,13 @@
 	* [Implicit Getters](#implicit-getters)
 	* [Enums](#enums)
 	* [Use of `final`](#use-of-final)
+	* [Testing Guide](#testing-guide)
 * [Best Practices](BestPractices.md)
 
 
 ## Overview ##
 
-This is Prolific's style guide for writing code in Swift. The purpose of this guide is to develop 
+This is A+E Networks' style guide for writing code in Swift. The purpose of this guide is to develop 
 a universal standard for Swift code that makes our codebases consistent and easy to read. This guide aims for
 consistent and clean code written in Swift in line with Apple and the general community.
 
@@ -33,6 +34,8 @@ The standards have been influenced by:
 * Apple's language design decisions -- specifically, its desire for Swift code to be written concisely and expressively
 * Xcode's defaults for code formatting
 * The general community
+
+This guide was directly modified from [Prolific's Swift Style Guide](https://github.com/prolificinteractive/swift-style-guide).  The testing guide was inspired by [Abercrombie & Fitch's Swift Style Guide](https://github.com/AbercrombieAndFitch/Swift-Style-Guide/).
 
 #### Contributing
 
@@ -613,3 +616,108 @@ internal final class SubClass: BaseClass {
 
 *Rationale* Subclassing in instances where the original class was not built to support subclasses can be a common source of bugs. Marking classes as `final`
 indicates that it was developed under the assumption that it would act on its own without regard for subclasses. 
+
+
+### Testing Guide ###
+
+Following a TDD approach this guide will begin with an overview of testing patterns. Swift projects will use XCTest in conjunction with [Nimble](https://github.com/Quick/Nimble). Nimble was chosen to provide additional helpful matchers not included in the core XCTest framework. Developers are free to use matchers from either testing framework. However in a debate the Nimble matchers should be chosen for consistency.
+
+All code should be written so that it is as testable as possible while maintaining the over all quality. The goal for each project will be that the code is 100% tested. That allows developers to reliably trust that a function will behave as expected and allow the developer to make assumptions based on the expected behavior.
+
+If instances arise where testing goals need to be phased down it is expected that this code will already be isolated to classes or structs that cab be clearly omitted. Possible example: Subclasses of UIView.
+
+If a particular test is taking longer to write than the method it is testing feel free to reach out for help on efficient ways to test that code.
+
+Tests should only focus on one outcome per test
+
+**Prefered**
+```swift
+func test_abs_givenANegativeNumber_itShouldHaveAPostiveResult() {
+  let result = abs(-5)
+  expect(result).to(equal(5));
+}
+
+func test_abs_givenAPositiveNumber_itShouldHaveAPostiveResult() {
+  let result = abs(7)
+  expect(result).to(equal(7));
+}
+```
+
+**Not Prefered**
+```swift
+func test_abs_givenANumber_itShouldHaveAPostiveResult() {
+  let result1 = abs(-5)
+  expect(result1).to(equal(5));
+
+  let result2 = abs(7)
+  expect(result2).to(equal(7));
+}
+```
+
+#### Test Naming ####
+
+Tests should initialize an instance that will be used for testing. This instance will be referred to as the testInstance. This clearly helps distinguish it from other objects that might be initialized in the test file. A common name also helps to quickly identify the object under test when adding to an existing test file.
+
+Tests should be named using the following format
+
+`test_Unit-Being-Tested_Context_Expected-Result`
+
+Example `func abs(_ x: Double) -> Double`
+
+`test_abs_givenANegativeNumber_itShouldHaveAPostiveResult`
+
+#### Testing Helpers ####
+
+When reusing the same test setup or teardown for two or more tests it is encouraged to move that setup or teardown to it's own function. The function name should match the name of the context and provide insight into if the method is intended to be setup or teardown.
+
+```swift
+func setup_ScreenIsEnabled() {
+    // Setup
+}
+
+func test_toggleEnabled_ScreenIsEnabled_itShouldDisableTheScreen() {
+    setup_ScreenIsEnabled()
+    // Test
+}
+```
+
+Factory methods can also be used and be prefixed with factory_
+example factory_userWithAgeRestriction
+
+If needed it is permissible to create test helpers for factories used in multiple testing files, example reading stored JSON or building a stubbed object.
+
+#### Test File Structure ####
+
+Test files should have the following structure:
+
+```swift
+import XCTest
+// Imports
+
+class SystemUnderTest: XCTestCase {
+
+    var testInstance : SystemUnderTest!
+
+    override func setUp() {
+        super.setUp()
+        testInstance = // init
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+
+    // Custom Setup Functions
+
+    func setup_Example() {
+    }
+
+    // Tests
+    func test_Example() {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+}
+```

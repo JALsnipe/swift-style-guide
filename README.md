@@ -461,7 +461,7 @@ Prefer letting the compiler infer the type instead of explcitly stating it, wher
 
 ```swift
 var max = 0                         // Int
-var name = "John                    // String
+var name = "John"                   // String
 var rect = CGRect()                 // CGRect
 var shoppingList = ["Eggs", "Milk"] // [String]
 

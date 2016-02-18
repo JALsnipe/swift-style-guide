@@ -35,9 +35,9 @@ The standards have been influenced by:
 * Xcode's defaults for code formatting
 * The general community
 
-This guide was directly modified from [Prolific's Swift Style Guide](https://github.com/prolificinteractive/swift-style-guide)
+This guide was directly modified from [Prolific's Swift Style Guide](https://github.com/prolificinteractive/swift-style-guide).
 
-The testing guide was inspired by [Abercrombie & Fitch's Swift Style Guide](https://github.com/AbercrombieAndFitch/Swift-Style-Guide/).
+The testing portion of this guide was directly modified from [Abercrombie & Fitch's Swift Style Guide](https://github.com/AbercrombieAndFitch/Swift-Style-Guide/).
 
 #### Contributing
 

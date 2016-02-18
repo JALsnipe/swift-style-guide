@@ -35,7 +35,9 @@ The standards have been influenced by:
 * Xcode's defaults for code formatting
 * The general community
 
-This guide was directly modified from [Prolific's Swift Style Guide](https://github.com/prolificinteractive/swift-style-guide).  The testing guide was inspired by [Abercrombie & Fitch's Swift Style Guide](https://github.com/AbercrombieAndFitch/Swift-Style-Guide/).
+This guide was directly modified from [Prolific's Swift Style Guide](https://github.com/prolificinteractive/swift-style-guide)
+
+The testing guide was inspired by [Abercrombie & Fitch's Swift Style Guide](https://github.com/AbercrombieAndFitch/Swift-Style-Guide/).
 
 #### Contributing
 
@@ -628,7 +630,7 @@ If instances arise where testing goals need to be phased down it is expected tha
 
 If a particular test is taking longer to write than the method it is testing feel free to reach out for help on efficient ways to test that code.
 
-Tests should only focus on one outcome per test
+Tests should only focus on one outcome per test:
 
 **Preferred:**
 ```swift
@@ -656,7 +658,7 @@ func test_abs_givenANumber_itShouldHaveAPostiveResult() {
 
 #### Test Naming ####
 
-Tests should initialize an instance that will be used for testing. This instance will be referred to as the testInstance. This clearly helps distinguish it from other objects that might be initialized in the test file. A common name also helps to quickly identify the object under test when adding to an existing test file.
+Tests should initialize an instance that will be used for testing. This instance will be referred to as the `testInstance`. This clearly helps distinguish it from other objects that might be initialized in the test file. A common name also helps to quickly identify the object under test when adding to an existing test file.
 
 Tests should be named using the following format
 
@@ -665,6 +667,8 @@ Tests should be named using the following format
 Example `func abs(_ x: Double) -> Double`
 
 `test_abs_givenANegativeNumber_itShouldHaveAPostiveResult`
+
+Test files should end with the `Spec` suffix.  As an example: if a developer is writing the tests for the `MediaPlayer` class in `MediaPlayer.swift`, the test file should be named `MediaPlayerSpec.swift`.
 
 #### Testing Helpers ####
 
@@ -681,10 +685,13 @@ func test_toggleEnabled_ScreenIsEnabled_itShouldDisableTheScreen() {
 }
 ```
 
-Factory methods can also be used and be prefixed with factory_
-example factory_userWithAgeRestriction
+Factory methods can also be used and be prefixed with `factory_`
+
+example: `factory_userWithAgeRestriction`
 
 If needed it is permissible to create test helpers for factories used in multiple testing files, example reading stored JSON or building a stubbed object.
+
+Tests should not rely on any network calls. All calls for server configuration files should be stubbed with local JSON files loaded from the test bundle at runtime. If a model is changed on the server-side, it is the developer's responsibility to update the local JSON file to match what was changed. This ensures that module tests are always up to date with the latest configuration file data model.
 
 #### Test File Structure ####
 

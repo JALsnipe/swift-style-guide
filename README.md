@@ -242,6 +242,25 @@ func arrays() {
 
 ```
 
+#### Collection Types ####
+
+Collection Type literal syntax should always be used over their more verbose `CollectionType<Element>` syntax.
+
+**Preferred:**
+
+```swift
+let myDict: [String : Any] = ["hello" : 0]
+let showDataSource = [Show]()
+```
+
+**Not preferred:**
+
+```swift
+let myDict: Dictionary<String, Any> = ["hello" : 0]
+let showDataSource = Array<Show>()
+```
+
+
 ### Self ###
 
 Never use the `self` modifier except in cases where it is necessary for the compiler or to alleviate conflicts
@@ -436,15 +455,17 @@ let myDictionary: [String : AnyObject] = ["String" : 0]
 Prefer letting the compiler infer the type instead of explcitly stating it, wherever possible:
 
 ```swift
-var max = 0 		// Int
-var name = "John" 	// String
-var rect = CGRect()	// CGRect
+var max = 0			    // Int
+var name = "John	 	    // String
+var rect = CGRect()		    // CGRect
+var shoppingList = ["Eggs", "Milk"] // [String]
 
 // Do not do:
 
 var max: Int = 0
 var name: String = "John"
 var rect: CGRect = CGRect()
+var shoppingList: [String] = ["Eggs", "Milk"]
 
 // Ok since the inferred type is not what we wanted:
 

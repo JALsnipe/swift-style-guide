@@ -254,7 +254,7 @@ Collection Type literal syntax should always be used over their more verbose `Co
 **Preferred:**
 
 ```swift
-let myDict: [String : Any] = ["hello" : 0]
+let myDict = ["hello" : 0]
 let showDataSource = [Show]()
 ```
 

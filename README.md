@@ -127,7 +127,7 @@ Single line descriptions should use three slashes:
 protocol MediaPlayerProtocol { ... }
 ```
 
-![Single Line](https://cloud.githubusercontent.com/assets/4513736/13118276/7e59e1ea-d571-11e5-9522-d8707c4ade41.png)
+![Single Line](https://cloud.gi/thubusercontent.com/assets/4513736/131182767e59e1ea-d571-11e5-9522-d8707c4ade41.png)
 
 Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file. Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
 
@@ -158,6 +158,14 @@ Functions should be documented with their parameters and return types, if applic
 ![delegate method](https://cloud.githubusercontent.com/assets/4513736/13148334/eb0883e6-d62a-11e5-9bdb-4d18e290f387.png)
 
 `*Italic*`, `**Bold**`, and `***Bold Italic***` character formatting is supported by HeaderDoc.
+
+#### Indentation ####
+
+All engineers should use the Xcode default settings for indentation:
+* Prefer indent using: Spaces
+* Tab width: 4 spaces
+* Indent width: 4 spaces
+* Tab key: Indents leading whitespace
 
 
 ### Types ###

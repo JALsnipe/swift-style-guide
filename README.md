@@ -1,4 +1,4 @@
-# A+E Swift Style Guide - DRAFT
+# A+E Swift Style Guide
 
 ## Table Of Contents ##
 
@@ -636,7 +636,7 @@ var myInt: Int {
 For all other cases, specify the modifier as needed (`set`, `didSet`, etc.). This is compiler enforced.
 
 *Rationale* The getter is implied enough to make sense without having to make it explicitly. It also cuts down on
-unneccessary verbiage and spacing to make code clearer.
+unnecessary verbiage and spacing to make code clearer.
 
 ### Enums ###
 

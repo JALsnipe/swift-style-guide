@@ -1,4 +1,4 @@
-# Prolific Swift Style Guide
+# Swift Style Guide
 
 ## Table Of Contents ##
 
@@ -12,6 +12,7 @@
 	* [Structs & Classes](#structs--classes)
 	* [Bracket Syntax](#bracket-syntax)
 	* [Force Unwrap](#force-unwrap)
+	* [Error Handling](#error-handling)
 	* [Access Modifiers](#access-modifiers)
 	* [Type Declarations](#type-declarations)
 	* [Type Inference](#type-inference)
@@ -19,12 +20,13 @@
 	* [Implicit Getters](#implicit-getters)
 	* [Enums](#enums)
 	* [Use of `final`](#use-of-final)
+	* [Testing Guide](#testing-guide)
 * [Best Practices](BestPractices.md)
 
 
 ## Overview ##
 
-This is Prolific's style guide for writing code in Swift. The purpose of this guide is to develop 
+This is my style guide for writing code in Swift. The purpose of this guide is to develop
 a universal standard for Swift code that makes our codebases consistent and easy to read. This guide aims for
 consistent and clean code written in Swift in line with Apple and the general community.
 
@@ -33,6 +35,10 @@ The standards have been influenced by:
 * Apple's language design decisions -- specifically, its desire for Swift code to be written concisely and expressively
 * Xcode's defaults for code formatting
 * The general community
+
+This guide was directly modified from [Prolific's Swift Style Guide](https://github.com/prolificinteractive/swift-style-guide).
+
+The testing portion of this guide was directly modified from [Abercrombie & Fitch's Swift Style Guide](https://github.com/AbercrombieAndFitch/Swift-Style-Guide/).
 
 #### Contributing
 
@@ -101,6 +107,68 @@ Xcode is also able to display `TODO` and `FIXME` tags directly in the source nav
 
 Other conventional comment tags, such as `NOTE` are not recognized by Xcode.
 
+Currently, there is no Swift alternative to `#warning` to raise a custom compiler warning. As a workaround, you can repurpose a deprecation warning to fit your needs:
+
+```swift
+@available(iOS, deprecated=1.0, message="I'm not deprecated, please ***FIXME**")
+@available(tvOS, deprecated=1.0, message="I'm not deprecated, please ***FIXME**")
+func WARNING() {
+
+}
+```
+
+#### Documentation ####
+
+All classes, protocols, methods, and variables in core components should be documented in Swift HeaderDoc format.
+
+Single line descriptions should use three slashes:
+
+```swift
+/// The protocol every video player instance conforms to.
+protocol MediaPlayerProtocol { ... }
+```
+
+![Single Line](https://cloud.githubusercontent.com/assets/4513736/131182767e59e1ea-d571-11e5-9522-d8707c4ade41.png)
+
+Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file. Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
+
+```swift
+/**
+    Exposes interfaces which allow user interactions with the player's UI components.
+    *NOTE*: The gesture recognizers are only supported on the iOS player, not the tvOS player.
+*/
+protocol MediaPlayerViewProtocol { ... }
+```
+
+![Multi-Line](https://cloud.githubusercontent.com/assets/4513736/13118331/c3714fca-d571-11e5-9a10-7cfa7dd475cb.png)
+
+Functions should be documented with their parameters and return types, if applicable.
+
+```swift
+/**
+  A delegate method which returns the maximum seek point for a control element.
+  Used for add breaks or the end of the asset.
+  
+  - parameter mediaPlayerControls: An instance of a MediaPlayerControls class.
+  
+  - returns: The maximum seek point the control supports for its asset based on the number of cue points, or length of the asset.
+*/
+  func mediaPlayerControlsMaximumSeekPoint(mediaPlayerControls: MediaPlayerControls) -> Double
+  ```
+  
+![delegate method](https://cloud.githubusercontent.com/assets/4513736/13148334/eb0883e6-d62a-11e5-9bdb-4d18e290f387.png)
+
+`*Italic*`, `**Bold**`, and `***Bold Italic***` character formatting is supported by HeaderDoc.
+
+#### Indentation ####
+
+All engineers should use the Xcode default settings for indentation:
+* Prefer indent using: Spaces
+* Tab width: 4 spaces
+* Indent width: 4 spaces
+* Tab key: Indents leading whitespace
+
+
 ### Types ###
 
 Prefer Swift native types over Objective-C types when possible. Because Swift types bridge to Objective-C, you should avoid types like NSString and NSNumber in favor of Int or String.
@@ -110,7 +178,7 @@ Prefer Swift native types over Objective-C types when possible. Because Swift ty
 **Preferred:**
 
 ```swift
-class myClass {
+class MyClass {
 ...
 }
 ```
@@ -118,7 +186,7 @@ class myClass {
 **Not preferred:**
 
 ```swift
-@objc class myClass {
+@objc class MyClass {
 ...
 }
 ```
@@ -139,6 +207,14 @@ let scaleInt = Int(scale)
 let scale: NSNumber = 5.0
 let scaleString = scale.stringValue
 let scaleInt = scale.integerValue
+```
+
+Objective-C types should be avoided if not explicitly required. As an alternative, use the Swift String constructors:
+
+```swift
+let scale = 5.0
+let str = String(scale) // "5.0"
+let otherStr = String(format: "%.0f", scale) // "5"
 ```
 
 
@@ -179,6 +255,25 @@ func arrays() {
 }
 
 ```
+
+#### Collection Types ####
+
+Collection Type literal syntax should always be used over their more verbose `CollectionType<Element>` syntax.
+
+**Preferred:**
+
+```swift
+let myDict = ["hello" : 0]
+let showDataSource = [Show]()
+```
+
+**Not preferred:**
+
+```swift
+let myDict: Dictionary<String, Any> = ["hello" : 0]
+let showDataSource = Array<Show>()
+```
+
 
 ### Self ###
 
@@ -332,6 +427,93 @@ to exist for the lifetime of the view controller object:
 
 ```
 
+### Error Handling ###
+
+The emergence of `try / catch` in Swift 2 has added powerful ways to define and return errors when something fails. The emergence of `ErrorType`
+as well for defining errors makes error definitions much more convenient over the cumbersome `NSError`. Because of this, for functions that can have multiple
+points of failure, you should always define it as `throws` and return a well-defined `ErrorType`.
+
+Consider the following contrived example:
+
+```swift
+
+func multiplyEvensLessThan10(evenNumber: Int) -> Int? {
+	guard evenNumber % 2 == 0 && evenNumber < 10 else {
+		return nil
+	}
+	
+	return evenNumber * 2
+}
+
+```
+
+The function above fails because it only expects evens less than 10 and returns an optional if that is violated. While this works and is simple, it
+is more Objective-C than Swift in its composition. The caller may not know which parameter they violated. For Swift, instead consider refactoring it as follows:
+
+```swift
+
+internal enum NumberError: ErrorType {
+	case NotEven
+	case TooLarge
+}
+
+func multiplyEvens(evenNumber: Int) throws -> Int {
+	guard evenNumber % 2 == 0 else {
+		throw NumberError.NotEven
+	}
+	
+	guard evenNumber < 10 else {
+		throw NumberError.TooLarge
+	}
+	
+	return evenNumber * 2
+}
+
+```
+
+The above, while slightly more cumbersome, this has well-defined benefits:
+
+* The caller is able to explicitly determine why their call to the function failed and thus can take active steps to recover:
+
+```swift
+let result: Int
+do {
+    result = try multiplyEvens(3)
+} catch NumberError.NotEven {
+    return 0
+} catch NumberError.TooLarge {
+    print("The Number entered was too large! Try again.")
+    return -1
+} catch {
+    fatalError("Unhandled error occurred.")
+}
+
+return result
+```
+
+* Try/catch semantics allow the caller to still retain the old optional functionality if the error is not relevant and they only care about the outcome:
+
+```swift
+let result: Int? = try? multiplyEvens(1)
+```
+
+* Or, if the caller knows that it will not violate any of the parameters for a valid input:
+
+```swift
+let result: Int = try! multiplyEvens(2)
+```
+
+So, even though we've now modified our API to use swift exceptions, we can still retain the old Objective-C functionality giving the caller the choice
+of how they wish to handle the result of this failable operation.
+
+#### NSError ####
+
+In general, you should avoid `NSError` in Swift in favor of defining your own `ErrorType`. However, in the event you do need to use `NSError` 
+(for interop with Objective-C, for instance):
+
+* Define a proper domain for your `NSError`. This should be specific to your module and ideally would be reflective of your bundle identifier (i.e. `com.myCompany.myApp`)
+* Define a list of the various error codes and what they translate to. These should be some sort of easily readable constant or enum value so that way the caller is able to determine what exactly failed.
+* In the userInfo, include _at least_ a localized description (`NSLocalizedDescriptionKey`) that accurately and concisely describes the nature of the error.
 
 ### Access Modifiers ###
 
@@ -349,6 +531,19 @@ internal final class Object {
 
 ```
 
+Further, the access modifier should always be presented first in the list before any other modifiers:
+
+```swift
+// Good!
+private unowned var obj: Object
+
+internal func doSomething() {
+}
+
+// Wrong!
+weak public var obj: Object?
+```
+
 ### Type Declarations ###
 
 When declaring types, the colon should be placed immediately after the identifier followed by one space
@@ -363,10 +558,10 @@ var intValue : Int
 
 ```
 
-In all use-cases, the colon should be associated with the left-most item with no spaces preceding and one space afterwards:
+The only exception to this rule is with Dictionary literals.
 
 ```swift
-let myDictionary: [String: AnyObject] = ["String": 0]
+let myDictionary: [String : AnyObject] = ["String" : 0]
 ```
 
 ### Type Inference ###
@@ -374,15 +569,17 @@ let myDictionary: [String: AnyObject] = ["String": 0]
 Prefer letting the compiler infer the type instead of explcitly stating it, wherever possible:
 
 ```swift
-var max = 0 		// Int
-var name = "John" 	// String
-var rect = CGRect()	// CGRect
+var max = 0                         // Int
+var name = "John"                   // String
+var rect = CGRect()                 // CGRect
+var shoppingList = ["Eggs", "Milk"] // [String]
 
 // Do not do:
 
 var max: Int = 0
 var name: String = "John"
 var rect: CGRect = CGRect()
+var shoppingList: [String] = ["Eggs", "Milk"]
 
 // Ok since the inferred type is not what we wanted:
 
@@ -439,7 +636,7 @@ var myInt: Int {
 For all other cases, specify the modifier as needed (`set`, `didSet`, etc.). This is compiler enforced.
 
 *Rationale* The getter is implied enough to make sense without having to make it explicitly. It also cuts down on
-unneccessary verbiage and spacing to make code clearer.
+unnecessary verbiage and spacing to make code clearer.
 
 ### Enums ###
 
@@ -530,3 +727,113 @@ internal final class SubClass: BaseClass {
 
 *Rationale* Subclassing in instances where the original class was not built to support subclasses can be a common source of bugs. Marking classes as `final`
 indicates that it was developed under the assumption that it would act on its own without regard for subclasses. 
+
+
+### Testing Guide ###
+
+Following a test-during development approach, this guide will begin with an overview of testing patterns. Swift projects will use XCTest in conjunction with [Nimble](https://github.com/Quick/Nimble). Nimble was chosen to provide additional helpful matchers not included in the core XCTest framework. Developers are free to use matchers from either testing framework. However in a debate the Nimble matchers should be chosen for consistency.
+
+All code should be written so that it is as testable as possible while maintaining the over all quality. The goal for each project will be that the code is 100% tested. That allows developers to reliably trust that a function will behave as expected and allow the developer to make assumptions based on the expected behavior.
+
+If instances arise where testing goals need to be phased down it is expected that this code will already be isolated to classes or structs that cab be clearly omitted. Possible example: Subclasses of UIView.
+
+If a particular test is taking longer to write than the method it is testing feel free to reach out for help on efficient ways to test that code.
+
+Tests should only focus on one outcome per test:
+
+**Preferred:**
+```swift
+func test_abs_givenANegativeNumber_itShouldHaveAPostiveResult() {
+  let result = abs(-5)
+  expect(result).to(equal(5));
+}
+
+func test_abs_givenAPositiveNumber_itShouldHaveAPostiveResult() {
+  let result = abs(7)
+  expect(result).to(equal(7));
+}
+```
+
+**Not preferred:**
+```swift
+func test_abs_givenANumber_itShouldHaveAPostiveResult() {
+  let result1 = abs(-5)
+  expect(result1).to(equal(5));
+
+  let result2 = abs(7)
+  expect(result2).to(equal(7));
+}
+```
+
+#### Test Naming ####
+
+Tests should initialize an instance that will be used for testing. This instance will be referred to as the `testInstance`. This clearly helps distinguish it from other objects that might be initialized in the test file. A common name also helps to quickly identify the object under test when adding to an existing test file.
+
+Tests should be named using the following format
+
+`test_Unit-Being-Tested_Context_Expected-Result`
+
+Example `func abs(_ x: Double) -> Double`
+
+`test_abs_givenANegativeNumber_itShouldHaveAPostiveResult`
+
+Test files should end with the `Spec` suffix. As an example: if a developer is writing the tests for the `MediaPlayer` class in `MediaPlayer.swift`, the test file should be named `MediaPlayerSpec.swift`.
+
+#### Testing Helpers ####
+
+When reusing the same test setup or teardown for two or more tests it is encouraged to move that setup or teardown to it's own function. The function name should match the name of the context and provide insight into if the method is intended to be setup or teardown.
+
+```swift
+func setup_ScreenIsEnabled() {
+    // Setup
+}
+
+func test_toggleEnabled_ScreenIsEnabled_itShouldDisableTheScreen() {
+    setup_ScreenIsEnabled()
+    // Test
+}
+```
+
+Factory methods can also be used and be prefixed with `factory_`
+
+example: `factory_userWithAgeRestriction`
+
+If needed it is permissible to create test helpers for factories used in multiple testing files, example reading stored JSON or building a stubbed object.
+
+Tests should not rely on any network calls. All calls for server configuration files should be stubbed with local JSON files loaded from the test bundle at runtime. If a model is changed on the server-side, it is the developer's responsibility to update the local JSON file to match what was changed. This ensures that module tests are always up to date with the latest configuration file data model.
+
+#### Test File Structure ####
+
+Test files should have the following structure:
+
+```swift
+import XCTest
+// Imports
+
+class SystemUnderTest: XCTestCase {
+
+    var testInstance : SystemUnderTest!
+
+    override func setUp() {
+        super.setUp()
+        testInstance = // init
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+
+    // Custom Setup Functions
+
+    func setup_Example() {
+    }
+
+    // Tests
+    func test_Example() {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+}
+```

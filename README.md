@@ -731,7 +731,7 @@ indicates that it was developed under the assumption that it would act on its ow
 
 ### Testing Guide ###
 
-Following a TDD approach this guide will begin with an overview of testing patterns. Swift projects will use XCTest in conjunction with [Nimble](https://github.com/Quick/Nimble). Nimble was chosen to provide additional helpful matchers not included in the core XCTest framework. Developers are free to use matchers from either testing framework. However in a debate the Nimble matchers should be chosen for consistency.
+Following a test-during development approach, this guide will begin with an overview of testing patterns. Swift projects will use XCTest in conjunction with [Nimble](https://github.com/Quick/Nimble). Nimble was chosen to provide additional helpful matchers not included in the core XCTest framework. Developers are free to use matchers from either testing framework. However in a debate the Nimble matchers should be chosen for consistency.
 
 All code should be written so that it is as testable as possible while maintaining the over all quality. The goal for each project will be that the code is 100% tested. That allows developers to reliably trust that a function will behave as expected and allow the developer to make assumptions based on the expected behavior.
 
@@ -777,7 +777,7 @@ Example `func abs(_ x: Double) -> Double`
 
 `test_abs_givenANegativeNumber_itShouldHaveAPostiveResult`
 
-Test files should end with the `Spec` suffix.  As an example: if a developer is writing the tests for the `MediaPlayer` class in `MediaPlayer.swift`, the test file should be named `MediaPlayerSpec.swift`.
+Test files should end with the `Spec` suffix. As an example: if a developer is writing the tests for the `MediaPlayer` class in `MediaPlayer.swift`, the test file should be named `MediaPlayerSpec.swift`.
 
 #### Testing Helpers ####
 

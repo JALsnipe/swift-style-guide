@@ -128,7 +128,7 @@ Single line descriptions should use three slashes:
 protocol MediaPlayerProtocol { ... }
 ```
 
-![Single Line](https://cloud.githubusercontent.com/assets/4513736/131182767e59e1ea-d571-11e5-9522-d8707c4ade41.png)
+![Single Line](https://cloud.githubusercontent.com/assets/4513736/13441947/ec628cb8-dfc7-11e5-90bc-29360b43266a.png)
 
 Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file. Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
 

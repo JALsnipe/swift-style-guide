@@ -1,4 +1,4 @@
-# A+E Swift Style Guide
+# Swift Style Guide
 
 ## Table Of Contents ##
 
@@ -26,7 +26,7 @@
 
 ## Overview ##
 
-This is A+E Networks' style guide for writing code in Swift. The purpose of this guide is to develop 
+This is my style guide for writing code in Swift. The purpose of this guide is to develop
 a universal standard for Swift code that makes our codebases consistent and easy to read. This guide aims for
 consistent and clean code written in Swift in line with Apple and the general community.
 
@@ -511,7 +511,7 @@ of how they wish to handle the result of this failable operation.
 In general, you should avoid `NSError` in Swift in favor of defining your own `ErrorType`. However, in the event you do need to use `NSError` 
 (for interop with Objective-C, for instance):
 
-* Define a proper domain for your `NSError`. This should be specific to your module and ideally would be reflective of your bundle identifier (i.e. `com.aetn.aetv.ios.watch`)
+* Define a proper domain for your `NSError`. This should be specific to your module and ideally would be reflective of your bundle identifier (i.e. `com.myCompany.myApp`)
 * Define a list of the various error codes and what they translate to. These should be some sort of easily readable constant or enum value so that way the caller is able to determine what exactly failed.
 * In the userInfo, include _at least_ a localized description (`NSLocalizedDescriptionKey`) that accurately and concisely describes the nature of the error.
 

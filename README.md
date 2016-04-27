@@ -128,7 +128,7 @@ Single line descriptions should use three slashes:
 protocol MediaPlayerProtocol { ... }
 ```
 
-![Single Line](https://cloud.githubusercontent.com/assets/4513736/13441947/ec628cb8-dfc7-11e5-90bc-29360b43266a.png)
+![Single Line](/images/comment1.png)
 
 Multi-line descriptions should use the Swift HeaderDoc comment format, and keep the indentation format of the file. Note that these comments start with `/**` rather than the Objective-C HeaderDoc format of `/*!`:
 
@@ -140,7 +140,7 @@ Multi-line descriptions should use the Swift HeaderDoc comment format, and keep 
 protocol MediaPlayerViewProtocol { ... }
 ```
 
-![Multi-Line](https://cloud.githubusercontent.com/assets/4513736/13118331/c3714fca-d571-11e5-9a10-7cfa7dd475cb.png)
+![Multi-Line](/images/comment2.png)
 
 Functions should be documented with their parameters and return types, if applicable.
 
@@ -156,7 +156,7 @@ Functions should be documented with their parameters and return types, if applic
   func mediaPlayerControlsMaximumSeekPoint(mediaPlayerControls: MediaPlayerControls) -> Double
   ```
   
-![delegate method](https://cloud.githubusercontent.com/assets/4513736/13148334/eb0883e6-d62a-11e5-9bdb-4d18e290f387.png)
+![delegate method](/images/comment3.png)
 
 `*Italic*`, `**Bold**`, and `***Bold Italic***` character formatting is supported by HeaderDoc.
 

@@ -217,6 +217,29 @@ let str = String(scale) // "5.0"
 let otherStr = String(format: "%.0f", scale) // "5"
 ```
 
+String interpolation should be avoided. `"\(someValue)"` is identical to calling `someValue.description`, where `String(someValue)` explicitly calls the String initializer, which is not guaranteed to be the same value as the description, especially if the object is a custom class conforming to `CustomStringConvertible`.
+
+```
+class MyClass: CustomStringConvertible {
+    var str: String
+
+    var description: String { return "MyClass - \(str)" }
+
+    init(str: String) {
+        self.str = str
+    }
+}
+
+extension String {
+    init(_ myclass: MyClass) {
+        self = myclass.str
+    }
+}
+
+let mc = MyClass(str: "Hello")
+String(mc)  // "Hello"
+"\(mc)"     // "MyClass - Hello"
+```
 
 ### Statement Termination ###
 
